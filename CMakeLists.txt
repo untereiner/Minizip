@@ -16,15 +16,15 @@ SET (CMAKE_INSTALL_PREFIX ${MINIZIP_BINARY_DIR}/install CACHE PATH "Minizip inst
 
 # Zlib
 FIND_PACKAGE (ZLIB)
-MARK_AS_ADVANCED(CLEAR ZLIB_LIBRARY_RELEASE)
-IF (NOT EXISTS ${ZLIB_LIBRARY_RELEASE})
+MARK_AS_ADVANCED(CLEAR ZLIB_LIBRARIES)
+IF (NOT EXISTS ${ZLIB_LIBRARIES})
 	MESSAGE(WARNING "The zlib library (ZLIB_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
 ENDIF ()
-IF (NOT IS_DIRECTORY ${ZLIB_INCLUDE_DIR})
+IF (NOT IS_DIRECTORY ${ZLIB_INCLUDE_DIRS})
 	MESSAGE(WARNING "The zlib include dir (ZLIB_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
 ENDIF ()
 
-	include_directories( ${ZLIB_INCLUDE_DIR} )
+	include_directories( ${ZLIB_INCLUDE_DIRS} )
 
 IF (UNIX)
 
@@ -46,7 +46,7 @@ ELSEIF (WIN32)
 ENDIF (UNIX)
 
 ADD_LIBRARY(minizip STATIC ${SOURCE_FILES})
-TARGET_LINK_LIBRARIES (minizip ${ZLIB_LIBRARY_RELEASE})
+TARGET_LINK_LIBRARIES (minizip ${ZLIB_LIBRARIES})
 
 #-----------------------------------------------------------------------------
 #
