@@ -1,0 +1,45 @@
+language: cpp
+
+matrix:
+    include:
+        - os: linux
+          dist: trusty
+          sudo: required
+          before_deploy:
+            - cd ${TRAVIS_BUILD_DIR}/../install
+            - zip -r Minizip-linux.zip .
+          deploy:
+            provider: releases
+            api_key: $MINIZIP_API_KEY
+            file: 
+                - "Minizip-linux.zip"
+            skip_cleanup: true
+            on:
+              tags: true
+              all_branches: true
+        - os: osx
+          osx_image: xcode10
+          before_deploy:
+            - cd ${TRAVIS_BUILD_DIR}/../install
+            - zip -r Minizip-osx.zip .
+          deploy:
+            provider: releases
+            api_key: $MINIZIP_API_KEY
+            file: 
+                - "Minizip-osx.zip"
+            skip_cleanup: true
+            on:
+              tags: true
+              all_branches: true
+
+
+script:
+  - mkdir ${TRAVIS_BUILD_DIR}/../build
+  - cd ${TRAVIS_BUILD_DIR}/../build
+  - cmake $TRAVIS_BUILD_DIR -DCMAKE_INSTALL_PREFIX:PATH=${TRAVIS_BUILD_DIR}/../install
+  - cmake --build .
+  - cmake --build . --target install
+ 
+env:
+  global:
+    secure: "rqDN8VtRi4hbWEVkUihJhPX1MZcvS/aZ7a8JNP9JYZ2CG71FR+eSZv7cZKMsIm7bZmR/b+40DYF941yBJE/xMBp2/DjWsszpkniYcrVS5uGcjbt2vCAXGdxaTL+tNnhwk0p+CufVEOBaQCO2+/MRI0f89mFSgK3D3wKUNksYzcB56lBxh8QjX2rM5uYfSQfiT4WhkqfwBCykYTMP7rGrcEh/MgoYqmsa9UgE3FcG8oTcUWaV9WXrLaJ7E9wO5L6RKTkUBLGoqCQdZ8hr0wM4KGaRzMtRXnZ9P+7/znee7Bafd4TTgJMK6+HkplZlx8qXpZq3qudxZZWJka5TxfJZHS5KPcau7kBux0aOqRdH6jmH5e43VjsDKNsAw852g8EMGqWaNP2RM595o3/tV3Qvn/QBhhtrFdTdyOC3O38JDyjBJ3hMnLHy32ON4xRdy3gWHi3GAoOKfcMaZgHYn5bw3ENDrPGY/gZsIcqrzzow/bSMr09Is+atVGeiXufbjCul1N9lhb3EdzDUlUxNLh8+HIAEyCrbkIvXU+FD+1/Oh/uLewWvC+pllJd4Qcb7TYSbksTwmD1ajCgyTPCQISdXo2QlFoXEkpG4Rc/ifu/7ia7LnVzfDeLUB0pqfXcdHXpheIWyp3o7HzT83xNXCxQNouXIDeGRmEz9Ay4pf6Bq65A="
