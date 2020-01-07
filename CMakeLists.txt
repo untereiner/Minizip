@@ -4,6 +4,8 @@ CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 
 PROJECT (minizip)
 
+set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "DEBUG_POSTFIX property is initialized when the target is created to the value of this variable except for executable targets")
+
 SET (MINIZIP_ROOT_DIR ${CMAKE_SOURCE_DIR})
 SET (MINIZIP_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 GET_FILENAME_COMPONENT (MINIZIP_PARENT_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
@@ -46,7 +48,13 @@ ELSEIF (WIN32)
 ENDIF (UNIX)
 
 ADD_LIBRARY(minizip STATIC ${SOURCE_FILES})
-TARGET_LINK_LIBRARIES (minizip ${ZLIB_LIBRARY_RELEASE})
+if (EXISTS ${ZLIB_LIBRARY_RELEASE} AND EXISTS ${ZLIB_LIBRARY_DEBUG})
+	target_link_libraries (minizip PRIVATE optimized ${ZLIB_LIBRARY_RELEASE} debug ${ZLIB_LIBRARY_DEBUG})
+elseif (EXISTS ${ZLIB_LIBRARY_RELEASE})
+	target_link_libraries (minizip PRIVATE ${ZLIB_LIBRARY_RELEASE})
+elseif (EXISTS ${ZLIB_LIBRARY_DEBUG})
+	target_link_libraries (minizip PRIVATE ${ZLIB_LIBRARY_DEBUG})
+endif ()
 
 #-----------------------------------------------------------------------------
 #
@@ -68,4 +76,3 @@ INSTALL (
 	FILES ${HEADER_FILES}
 	DESTINATION ${CMAKE_INSTALL_PREFIX}/include
 )
-
