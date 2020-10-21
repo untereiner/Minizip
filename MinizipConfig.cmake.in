@@ -1,0 +1,7 @@
+@PACKAGE_INIT@
+include(CMakeFindDependencyMacro)
+find_dependency(ZLIB REQUIRED)
+
+if(NOT TARGET Minizip::Minizip)
+	include("${CMAKE_CURRENT_LIST_DIR}/MinizipTargets.cmake")
+endif()
