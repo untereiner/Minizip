@@ -66,9 +66,6 @@ export(TARGETS ${PROJECT_NAME}
 	FILE "${CMAKE_BINARY_DIR}/lib/cmake/${PROJECT_NAME}/${PROJECT_NAME}Targets.cmake"
 )
 
-export(PACKAGE ${PROJECT_NAME})
-
-
 configure_package_config_file(
 	"${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in"
 	"${CMAKE_BINARY_DIR}/lib/cmake/${PROJECT_NAME}/${PROJECT_NAME}Config.cmake"
