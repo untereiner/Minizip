@@ -8,7 +8,8 @@ set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
 find_package(ZLIB)
 
-add_library(${PROJECT_NAME} STATIC "")
+add_library(${PROJECT_NAME} "")
+add_library(minizip::${PROJECT_NAME} ALIAS minizip)
 
 target_sources(${PROJECT_NAME} 
 	PRIVATE 
@@ -29,6 +30,8 @@ if(WIN32)
 			"${CMAKE_CURRENT_LIST_DIR}/iowin32.c"
 	)
 endif()
+
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 
